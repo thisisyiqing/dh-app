@@ -1,11 +1,10 @@
-import { isAbsolute } from 'path';
-import React, {useState} from 'react';
+import React, {Component, useRef, useEffect, useState} from 'react';
 import { Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
 const DisplayResult = () => {
 
-    const [hasTrash, setHasTrash] = useState<boolean[]>([true, false, false, true, false, false, true]);
+    const [hasTrash, setHasTrash] = useState<boolean[]>([true, false, true, true, true, false, false]);
     const [userResult, setUserResult] = useState<String[]>([]);
     const [finishLoading, setFinishLoading] = useState<Boolean>(false);
     const resultText = [
@@ -29,6 +28,14 @@ const DisplayResult = () => {
         And for occasions that food waste must be produced (such as fruit peel), remember to throw it in compost."
     ]
 
+    const myRef = useRef(null)
+
+    const scrollToRef = (myRef: React.MutableRefObject<null>) =>{
+        if(myRef.current) {
+            window.scrollTo(0, myRef.current) 
+        }
+    }
+
     const generateResult = () => {
         // need to get the booleans from the back end!!
 
@@ -37,31 +44,51 @@ const DisplayResult = () => {
                 userResult.push(resultText[index])
             }
         })
-
+        
         setFinishLoading(true)
     }
 
-    const displayResult = () => (
-        <div style={finishLoading ? { display: 'block' , position: "absolute", marginTop: "820px"} : { display: 'none' }}>
-            {userResult.map((res) => {
-                return (
-                <Card style={{backgroundColor: "#6C5CE7", marginBottom: "20px", marginLeft: "-700px", marginRight: "700px"}}>
-                    <Card.Body style={{color: "white", fontFamily: 'raleway', fontSize: "18px"}}>{res}</Card.Body>
-                </Card>
-                )
-            })}
-        </div>
-    );
+    
+
+    const displayResult = () => {
+        scrollToRef(myRef)
+        return(
+            <div ref={myRef} style={finishLoading ? { display: 'block' , position: "absolute", marginTop: "780px"} : { display: 'none' }}>
+                {userResult.map((res) => {
+                    return (
+                    <Card style={{backgroundColor: "#6C5CE7", marginBottom: "20px", marginLeft: "-700px", marginRight: "700px"}}>
+                        <Card.Body style={{color: "white", fontFamily: 'raleway', fontSize: "18px"}}>{res}</Card.Body>
+                    </Card>
+                    )
+                })}
+            </div>
+        )
+    };
+
+    // const ScrollDemo = () => {
+
+    //     const myRef = useRef(null)
+    //     const executeScroll = () => scrollToRef(myRef)
+     
+    //     return (
+    //        <> 
+    //           <div ref={myRef} style={{marginBottom:"800px"}}>I wanna be seen</div> 
+    //           <button onClick={executeScroll}> Click to scroll </button> 
+    //        </>
+    //     )
+    //  }
+
+    
 
     return (
         <div>
+            {displayResult()}
             <Button variant="primary" size="sm"  style={{backgroundColor:"#6C5CE7", border: '1px solid #6C5CE7', borderRadius: '7px',
             position: 'absolute', marginTop: "500px", marginLeft: "-480px", fontFamily: 'raleway', fontSize: "20px"}} onClick={generateResult}>
                 &nbsp;Get My Result&nbsp;
             </Button>
             <h1 style={{fontFamily: 'raleway', fontSize: "70px", position: "absolute", marginTop: "930px", marginLeft: "-130px"}}>Our</h1>
             <h1 style={{fontFamily: 'raleway', fontSize: "120px", position: "absolute", marginTop: "990px", marginLeft: "-130px"}}>&nbsp;&nbsp;Advices</h1>
-            {displayResult()}
         </div>
     )
 }
