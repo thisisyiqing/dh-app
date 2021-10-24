@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 const DisplayResult = () => {
 
-    const [hasTrash, setHasTrash] = useState<boolean[]>([true, false, true, true, true, false, false]);
+    const [hasTrash, setHasTrash] = useState<boolean[]>([true, false, false, true, true, false, false]);
     const [userResult, setUserResult] = useState<String[]>([]);
     const [finishLoading, setFinishLoading] = useState<Boolean>(false);
     const resultText = [
@@ -38,6 +38,7 @@ const DisplayResult = () => {
 
     const generateResult = () => {
         // need to get the booleans from the back end!!
+        setUserResult([])
 
         hasTrash.map((hasTrashBool, index) => {
             if(hasTrashBool) {
@@ -45,7 +46,8 @@ const DisplayResult = () => {
             }
         })
         
-        setFinishLoading(true)
+        setHasTrash([])
+        setFinishLoading(!finishLoading)
     }
 
     
