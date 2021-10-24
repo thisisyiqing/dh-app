@@ -6,4 +6,4 @@ Step 3 npm install @azure/storage-blob
 
 Step 4 npm install react-bootstrap bootstrap@5.1.3
 
-Step 4 npm start to run the web app
+Step 5 npm start to run the web app
