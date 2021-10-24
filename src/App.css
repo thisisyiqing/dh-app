@@ -2,9 +2,7 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.right-body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -35,4 +33,21 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.title {
+  font-size: 36;
+  text-align: left !important;
+  color: #000000;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.content {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
