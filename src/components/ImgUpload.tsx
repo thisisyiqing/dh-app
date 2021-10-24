@@ -25,17 +25,38 @@ const ImgUpload = () => {
         setFile(undefined);
     }
 
+    // display file name and image
+  const DisplayImagesFromContainer = () => (
+    <div>
+      <h2>Container items</h2>
+      <ul>
+        {blobList.map((item, index) => {
+          return (
+            <li key={item}>
+              <div>
+                <h2>img {index + 1}</h2>
+                <br />
+                <img src={item} alt={item} height="200" />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+
     return (
         <div>
             <h3>
                 Please upload your photo here!
             </h3>
             <div>
-                <input type="file" onChange={handleFileChange} />
+                <input type="file" multiple onChange={handleFileChange} />
                 <button onClick={handleUpload}>
                     Upload
                 </button>
             </div>
+            {DisplayImagesFromContainer()}
         </div>
     )
 }
