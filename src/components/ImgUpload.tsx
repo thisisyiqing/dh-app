@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import uploadFileToBlob from '../azure-storage-blob';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios'
 
 const ImgUpload = () => {
 
     const [blobList, setBlobList] = useState<string[]>([]);
     const [file, setFile] = useState<File>();
+    const [newBlob, setNewBlob] = useState<String>();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.files == null) {
@@ -18,11 +20,28 @@ const ImgUpload = () => {
         if(!file) {
             return;
         }
+        console.log(newBlob)
+        setNewBlob("");
 
         const blobsInContainer: string[] = await uploadFileToBlob(file);
-        setBlobList(blobsInContainer);
-        console.log(blobsInContainer);
+        const str = "https://dh-app-backend.herokuapp.com/analyze=" + blobsInContainer[blobsInContainer.length - 1]
+        axios(str)
+        console.log(blobList)
+        console.log(blobsInContainer)
 
+        var i = 0;
+        while(i < blobList.length) {
+          if(blobList[i] != blobsInContainer[i]) {
+            setNewBlob(blobsInContainer[i]);
+          }
+          i = i + 1;
+        }
+
+        if(!newBlob || newBlob=="") {
+          setNewBlob(blobsInContainer[blobsInContainer.length - 1])
+        }
+      
+        setBlobList(blobsInContainer);
         setFile(undefined);
     }
 

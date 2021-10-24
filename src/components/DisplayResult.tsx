@@ -1,6 +1,7 @@
 import React, {Component, useRef, useEffect, useState} from 'react';
 import { Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios'
 
 const DisplayResult = () => {
 
@@ -36,19 +37,38 @@ const DisplayResult = () => {
         }
     }
 
-    const generateResult = () => {
-        // need to get the booleans from the back end!!
-        setUserResult([])
-
-        hasTrash.map((hasTrashBool, index) => {
-            if(hasTrashBool) {
-                userResult.push(resultText[index])
-            }
-        })
-        
-        setHasTrash([])
-        setFinishLoading(!finishLoading)
-    }
+    const generateResult = () => {
+            // need to get the booleans from the back end!!
+            interface myRes {
+                'plastic bottle': boolean;
+                'other bottle': boolean;
+                'paper box' : boolean;
+                'can' : boolean;
+                'plastic paper bag' : boolean;
+                'wrapper' : boolean;
+                'food fruit' : boolean;
+            }
+            axios('https://dh-app-backend.herokuapp.com/getResult')
+              .then(res => {
+                console.log(res.data);
+                let value : myRes = res.data as myRes;
+                hasTrash[0] = value["plastic bottle"];
+                hasTrash[1] = value["other bottle"];
+                hasTrash[2] = value["paper box"];
+                hasTrash[3] = value["can"];
+                hasTrash[4] = value["plastic paper bag"];
+                hasTrash[5] = value["wrapper"];
+                hasTrash[6] = value["food fruit"];
+              })
+    
+            hasTrash.map((hasTrashBool, index) => {
+                if(hasTrashBool) {
+                    userResult.push(resultText[index])
+                }
+            })
+    
+            setFinishLoading(true)
+        }
 
     
 
